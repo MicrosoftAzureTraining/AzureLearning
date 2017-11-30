@@ -1,0 +1,86 @@
+1.Write-Host----------------> To print
+2.Get-Content---------------> Get the information from the file
+3.Set-Content---------------> replace and set the value 
+4.Add-Content---------------> add the information into the file.
+
+
+5.New-Item -Name EmptyFile.txt -ItemType File---------> Create text file
+
+6.mkdir c:\users\rajashekarbadigerp\pavan-------------> Create pavan folder
+or
+New-Item -Name EmptyFile -ItemType directory
+
+7.Creation of new file in a specified path
+
+$Location = "D:\PowerShell\Ezines"
+New-Item -Path $Location -Name "No210.txt" -ItemType File
+
+8.Remove a file from a specified location
+
+$Location="C:\Users\rajashekarbadigerp\Desktop\powershell\new.txt"
+Remove-Item $Location
+
+9.Remove a folder from a specifed location
+
+$Location="C:\Users\rajashekarbadigerp\Desktop\powershell\Pavan"
+Remove-Item $Location
+
+10.Get-Command
+
+11.get-command -Noun service---------->[all information related to name service]
+
+12.get-service
+
+13.get-alias
+
+14.get-process -name microsoftedge
+
+=============================================================
+
+Get members of the class
+
+Car{
+
+[int] $length;
+[int] $width;
+hiddent [int] $bredth;
+
+}
+
+$Car | Get-member --------->[It will display length and width]
+
+$Car | Get-member -Force------>[It will display lenght,width and bredth]
+
+============================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
