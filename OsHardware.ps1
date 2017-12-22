@@ -1,6 +1,8 @@
 ﻿#Param($computer="localhost")
 #Param($computer="INL-GGKRR72.groupinfra.com")
-Param($computer = "192.168.0.105" )
+
+$hardware=@()
+$computer=hostname
 
 
 Function Get-Osversion($computer,[ref]$osv)
@@ -55,11 +57,17 @@ Default{"Version not listed"}
 }#endswitch
 }#end GetOSversion
 
+
 # *** entry point to script *** 
 # OSVersion 
 $osv = $null 
 Get-OSVersion -computer $computer -osv ([ref]$osv) 
 Write-Host OSVersion:$osv 
+
+foreach($link in $osv)
+{
+    $hardware+=$link
+}
 
 Write-Host "System Information"
 
@@ -68,7 +76,10 @@ Write-Host "System Information"
 $cn=(Get-WmiObject -Class Win32_OperatingSystem -ComputerName $computer).CSName
 Write-Host "Computer Name:"$cn -ForegroundColor Cyan
 
-
+foreach($link in $cn)
+{
+    $hardware+=$link
+}
 
 #Install Date#
 
@@ -76,54 +87,45 @@ Write-Host "Computer Name:"$cn -ForegroundColor Cyan
 $id=(Get-WmiObject -Class Win32_OperatingSystem -ComputerName $computer).InstallDate
 Write-Host "Install Date:" -ForegroundColor Yellow $id
 
+foreach($link in $id)
+{
+    $hardware+=$link
+}
+
 #Service Pack Version#
 
 #$os=Get-WmiObject -Class Win32_OperatingSystem -ComputerName $computer| Select-Object ServicePackMajorVersion | ForEach {$_.ServicePackMajorVersion}
 $sp=(Get-WmiObject -Class Win32_OperatingSystem -ComputerName $computer).ServicePackMajorVersion
 Write-Host "Service Pack Version:"-ForegroundColor Green $sp
 
+foreach($link in $sp)
+{
+    $hardware+=$link
+}
+
 #RAM Details#
 
 $ram=[Math]::Round((Get-WmiObject -Class win32_computersystem -ComputerName $computer).TotalPhysicalMemory/1GB)
 Write-host "RAM Details:" $ram "GB" -ForegroundColor Red 
+
+foreach($link in $ram)
+{
+    $hardware+=$link
+}
 
 #Operating System#
 
 $op=(Get-WmiObject -Class win32_OperatingSystem -Computer $computer).OSArchitecture
 Write-host "System Type:"$op "Operating System" -ForegroundColor Magenta
 
-#Software installed with name skype
+foreach($link in $op)
+{
+    $hardware+=$link
+}
 
-#Get-WmiObject -Class Win32_Product -Filter {Name like "%skype%"} 
 
 
-<#$SMTPServer="smtp.gmail.com"
-#$SMTPServer="smtp-mail.outlook.com"
-$SMTPPort="587"
-$Username="pavanrb5007@gmail.com"
-$Password="*1234#pavan"
-$To="pavan.rajashekar.badiger@cgi.com"
-#$body="hello"
-#$header= "Below are the System Information of User <b><Font Color=Red>$To</b></font><br><br>"
-$header="<b><font size=3 color=red weight=bold>Below are the System($cn) Information of User($Username)</font></b><br><br>"
-$para1= "<b>OSVersion:</b> $osv <br><br>"
-$para2= "<b>Install Date:</b> $id <br><br>"
-$para3= "<b>Service Pack Version:</b> $sp <br><br>"
-$para4= "<b>RAM:</b> $ram<b>GB</b> <br><br>"
-$para5= "<b>Operating System:</b> $op <br><br>"
-#$para6= "Computer Name:"+$cn
-$message=New-Object System.Net.Mail.MailMessage
-$message.body=@($header,$para1,$para2,$para3,$para4,$para5)
-$message.Subject="System Details"
-#$message.Body=$x
-$message.to.add($To)
-$message.from=$Username
-$smtp=New-Object System.Net.Mail.SmtpClient($SMTPServer,$SMTPPort);
-$smtp.EnableSsl=$true
-$message.IsBodyHtml=$true
-$smtp.Credentials=New-Object System.Net.NetworkCredential($Username,$Password);
-$smtp.Send($message);
-Write-Host "Mail Sent"#>
+#Invoke-Expression -Command C:\Users\rajashekarbadigerp\Desktop\powershell\email.ps1
 
 
 
